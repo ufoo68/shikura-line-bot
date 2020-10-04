@@ -1,14 +1,5 @@
-# Welcome to your CDK TypeScript project!
+# Shikura LINE BOT
 
-This is a blank project for TypeScript development with CDK.
+<img src=asset/icon.png width=300 />
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+[シクラのYouTubeチャンネル](https://www.youtube.com/channel/UCYp4_ZzpgjMhImlDyXQTKjg)に関する情報配信用のLINE BOT用のサーバーです。本システムの実装には[AWS CDK](https://aws.amazon.com/jp/cdk/)を利用しています。
