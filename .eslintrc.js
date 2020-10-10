@@ -44,5 +44,7 @@ module.exports = {
         js: 'never',
       },
     ],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'error'
   },
 }
