@@ -1,4 +1,7 @@
-*.js
+bin/*.js
+lib/*.js
+lambda/**/*.js
+test/**/*.js
 !jest.config.js
 *.d.ts
 node_modules
