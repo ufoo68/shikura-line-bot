@@ -22,6 +22,9 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: test
+        run: echo ${{github.ref}}
+
       - name: CDK Deploy prod
         if: github.ref == 'refs/heads/main'
         run: yarn deploy:prod
