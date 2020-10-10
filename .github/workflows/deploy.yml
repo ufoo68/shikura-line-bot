@@ -1,10 +1,9 @@
-name: cdk
+name: cdk deploy
 
 on:
   pull_request:
     types: [closed]
-    branches:
-      - main
+    branches: [main, develop]
 jobs:
   aws_cdk:
     runs-on: ubuntu-18.04
@@ -23,8 +22,17 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: CDK Deploy
+      - name: CDK Deploy prod
+        if: github.ref == 'main'
         run: yarn deploy:prod
+        env:
+          AWS_DEFAULT_REGION: 'ap-useast-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: CDK Deploy dev
+        if: github.ref == 'develop'
+        run: yarn deploy:dev
         env:
           AWS_DEFAULT_REGION: 'ap-useast-1'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
