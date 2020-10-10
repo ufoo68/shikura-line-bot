@@ -22,11 +22,8 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: test
-        run: echo ${{github.ref}}
-
       - name: CDK Deploy prod
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'main'
         run: yarn deploy:prod
         env:
           AWS_DEFAULT_REGION: 'ap-useast-1'
@@ -34,7 +31,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: CDK Deploy dev
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'develop'
         run: yarn deploy:dev
         env:
           AWS_DEFAULT_REGION: 'ap-useast-1'
