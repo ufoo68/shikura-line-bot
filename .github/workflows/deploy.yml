@@ -23,7 +23,7 @@ jobs:
         run: yarn build
 
       - name: CDK Deploy prod
-        if: github.ref == 'main'
+        if: github.ref == 'prod'
         run: yarn deploy:prod
         env:
           AWS_DEFAULT_REGION: 'us-east-1'
