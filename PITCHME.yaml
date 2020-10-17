@@ -1,0 +1,12 @@
+gitpitch: 4.0
+
+published: true
+
+theme-override: assets/css/PITCHME.css
+
+custom-fonts: [
+  "assets/fonts/Inter.woff2",
+  "assets/fonts/YanoneKaffeesatz.woff2"
+]
+
+title: "AWS CDKでLINE BotのDevOpsをやってみる"
