@@ -28,7 +28,6 @@ AWS CDKでLINE BotのDevOpsをやってみる
   * パッケージの更新
 4. デモンストレーション
 5. まとめ
-6. Q&A
 
 +++
 
@@ -73,4 +72,85 @@ AWS CDKを使うメリットについて説明するために、*プロビジョ
 
 ### テンプレートファイルでの管理
 
-[CloudFormation](https://aws.amazon.com/jp/cloudformation/)を用いてテンプレートファイルでクラウドの構成を管理する方法がある。`json`や`yaml`の形式で書くことができる。
+[CloudFormation](https://aws.amazon.com/jp/cloudformation/)を用いてテンプレートファイルでクラウドの構成を管理する方法がある。構成ファイルは`json`や`yaml`の形式で書くことができる。
+
+```json
+"myDynamoDBTable" : {
+      "Type" : "AWS::DynamoDB::Table",
+      "Properties" : {
+        "AttributeDefinitions": [ { 
+          "AttributeName" : {"Ref" : "HashKeyElementName"},
+          "AttributeType" : {"Ref" : "HashKeyElementType"}
+        } ],
+        "KeySchema": [
+          { "AttributeName": {"Ref" : "HashKeyElementName"}, "KeyType": "HASH" }
+        ],
+        "ProvisionedThroughput" : {
+          "ReadCapacityUnits" : {"Ref" : "ReadCapacityUnits"},
+          "WriteCapacityUnits" : {"Ref" : "WriteCapacityUnits"}
+        }                
+     }
+}
+```
+
++++
+
+### CloudFormationのここがつらい
+
+- テンプレートファイルの記法を一々ドキュメントで確認しにいく必要がある
+- 構文エラーチェックがやりにくい
+- 共通化したいところは自分でスクリプトを書くことになる
+
+
++++
+
+### AWS CDKでの構成管理
+
+*AWS CDK*ではいくつかのプログラミング言語で構成を記述することができる。以下は*TypeScript*で`lambda`+`API Gateway`+`DynamoDB`の環境を記述した例
+
+```typescript
+import * as cdk from '@aws-cdk/core'
+import * as lambda from '@aws-cdk/aws-lambda'
+import * as apigateway from '@aws-cdk/aws-apigateway'
+import * as dynamodb from '@aws-cdk/aws-dynamodb'
+
+export class CdkStack extends cdk.Stack {
+  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+    super(scope, id, props)
+
+    const table = new dynamodb.Table(this, 'Table', {
+      partitionKey: { name: 'key', type: dynamodb.AttributeType.STRING }
+    })
+
+    const handler = new lambda.Function(this, 'Handler', {
+      runtime: lambda.Runtime.NODEJS_10_X,
+      code: lambda.Code.asset('lambda'),
+      handler: 'index.handler',
+      environment: {
+        TABLE_NAME: table.tableName
+      }
+    })
+
+    table.grantReadWriteData(handler)
+
+    new apigawteway.LambdaRestApi(this, 'Endpoint', {
+      handler
+    })
+
+  }
+}
+```
+
++++
+
+### AWS CDKのいいところ
+
+- エディタの補完を使うと公式ドキュメントを確認する手間が省ける
+- 型を使って構文のエラーチェックができる
+- ライブラリ（もしくはnpmパッケージ作成）で共通化ができる
+
++++
+
+次からのDEMOにてAWS CDKを使ったLINE Bot開発の例をお見せします。
+
+---
