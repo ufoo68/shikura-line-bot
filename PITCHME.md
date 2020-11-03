@@ -142,6 +142,27 @@ export class CdkStack extends cdk.Stack {
 
 ![img](./asset/sc1.jpg)
 
++++
+
+### システム構成
+
+![img](./asset/architecture.jpg)
+
++++
+
+### システムの構築方法
+
+今回はTypeScriptを用いてシステムを構築。具体的な実装としては`Stack`というClassを定義してAWSリソースを定義していく。
+
+```typescript
+export class ShikuraLineBotStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, target: Environments, props?: cdk.StackProps) {
+    super(scope, id, props)
+    // ここにリソースを定義していく
+  }
+}
+```
+
 ---
 
 ### LINE BotのDevOpsについて考えてみる
