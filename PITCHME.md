@@ -1,32 +1,32 @@
-AWS CDKでLINE BotのDevOpsをやってみる
+# AWS CDKでLINE BotのDevOpsをやってみる
 
 +++
 
 ### 自己紹介
 
-* 名前
-  * 松永勇太
-* 出身
-  * 滋賀県
-* 居住
-  * 埼玉県
-* 職業
-  * エンジニア
-* I'm not LINE API Expert
+- 名前
+  - 松永勇太
+- 出身
+  - 滋賀県
+- 居住
+  - 埼玉県
+- 職業
+  - エンジニア
+- I'm not LINE API Expert
   
 +++
 
 ### Topics
 
 1. メインワードについて
-  * DevOps
-  * AWS CDK
+  - DevOps
+  - AWS CDK
 2. AWS CDKを使うメリット
-3. LINE BotのDevOpsを考えてみる
-  * 開発と運用それぞれの環境をわける
-  * デプロイの管理
-  * パッケージの更新
-4. デモンストレーション
+3. AWS CDKを使ったLINE Bot開発について
+4. LINE BotのDevOpsを考えてみる
+  - 開発と運用それぞれの環境をわける
+  - デプロイの管理
+  - パッケージの更新
 5. まとめ
 
 +++
@@ -35,9 +35,20 @@ AWS CDKでLINE BotのDevOpsをやってみる
 
 このセッションでお話することは、*LINE BotのDevOps的なものを考えてみた*の単なる一例です。開発方法（特にDevOps）に正解はないと思いますので、開発ツールの参考程度で聞いていただけると幸いです。
 
++++
+
+### 今回話さないこと
+
+- Messaging APIを用いたBot開発についての基礎知識
+  - 「*オウム返しBot*を作ったことある」程度の知識がある前提で話を進めます
+- AWSを使ったクラウド開発についての基礎知識
+  - *AWS CDK*についてはちゃんとお話します
+
 ---
 
-メインワードについて
+### メインワードについて
+
+*DevOps*と*AWS CDK*について簡単に説明します。後者については以降の節でもう少し掘り下げてお話します。
 
 +++
 
@@ -75,21 +86,13 @@ AWS CDKを使うメリットについて説明するために、*プロビジョ
 [CloudFormation](https://aws.amazon.com/jp/cloudformation/)を用いてテンプレートファイルでクラウドの構成を管理する方法がある。構成ファイルは`json`や`yaml`の形式で書くことができる。
 
 ```json
-"myDynamoDBTable" : {
-      "Type" : "AWS::DynamoDB::Table",
-      "Properties" : {
-        "AttributeDefinitions": [ { 
-          "AttributeName" : {"Ref" : "HashKeyElementName"},
-          "AttributeType" : {"Ref" : "HashKeyElementType"}
-        } ],
-        "KeySchema": [
-          { "AttributeName": {"Ref" : "HashKeyElementName"}, "KeyType": "HASH" }
-        ],
-        "ProvisionedThroughput" : {
-          "ReadCapacityUnits" : {"Ref" : "ReadCapacityUnits"},
-          "WriteCapacityUnits" : {"Ref" : "WriteCapacityUnits"}
-        }                
-     }
+{
+  "Type" : "AWS::DynamoDB::Table",
+  "Properties" : {
+    "AttributeDefinitions": [ { 
+      "AttributeName" : {"Ref" : "HashKeyElementName"},
+      "AttributeType" : {"Ref" : "HashKeyElementType"}
+  } ],
 }
 ```
 
@@ -106,37 +109,15 @@ AWS CDKを使うメリットについて説明するために、*プロビジョ
 
 ### AWS CDKでの構成管理
 
-*AWS CDK*ではいくつかのプログラミング言語で構成を記述することができる。以下は*TypeScript*で`lambda`+`API Gateway`+`DynamoDB`の環境を記述した例
+*AWS CDK*ではいくつかのプログラミング言語で構成を記述することができる。
 
 ```typescript
-import * as cdk from '@aws-cdk/core'
-import * as lambda from '@aws-cdk/aws-lambda'
-import * as apigateway from '@aws-cdk/aws-apigateway'
-import * as dynamodb from '@aws-cdk/aws-dynamodb'
-
 export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
-
     const table = new dynamodb.Table(this, 'Table', {
       partitionKey: { name: 'key', type: dynamodb.AttributeType.STRING }
     })
-
-    const handler = new lambda.Function(this, 'Handler', {
-      runtime: lambda.Runtime.NODEJS_10_X,
-      code: lambda.Code.asset('lambda'),
-      handler: 'index.handler',
-      environment: {
-        TABLE_NAME: table.tableName
-      }
-    })
-
-    table.grantReadWriteData(handler)
-
-    new apigawteway.LambdaRestApi(this, 'Endpoint', {
-      handler
-    })
-
   }
 }
 ```
@@ -151,6 +132,44 @@ export class CdkStack extends cdk.Stack {
 
 +++
 
-次からのDEMOにてAWS CDKを使ったLINE Bot開発の例をお見せします。
+更にくわしい内容は[こちらの公式の資料](https://aws.amazon.com/jp/blogs/news/webinar-bb-aws-cloud-development-kit-cdk-2020/)を見てもらうとして、次からAWS CDKを使ったLINE Bot開発の例をお見せします。
 
 ---
+
+### AWS CDKを使ったLINE Bot開発について
+
+今回は自分の[YouTubeチャンネル](https://www.youtube.com/channel/UCYp4_ZzpgjMhImlDyXQTKjg)用のLINE Botをつくってみました。
+
+![img](./asset/sc1.jpg)
+
++++
+
+### システム構成
+
+![img](./asset/architecture.jpg)
+
++++
+
+### システムの構築方法
+
+今回はTypeScriptを用いてシステムを構築。具体的な実装としては`Stack`というClassを定義してAWSリソースを定義していく。
+
+```typescript
+export class ShikuraLineBotStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, target: Environments, props?: cdk.StackProps) {
+    super(scope, id, props)
+    // ここにリソースを定義していく
+  }
+}
+```
+
+---
+
+### LINE BotのDevOpsについて考えてみる
+
+今回は以下の３つに着目してみました。
+
+- 開発と運用それぞれの環境をわける
+- デプロイの管理
+- パッケージの更新
+
