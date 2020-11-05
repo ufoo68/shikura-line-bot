@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as Types from '@line/bot-sdk/lib/types'
 
-const url = 'https://script.google.com/macros/s/AKfycbzqm1S9kXJrYtC70aPjfOHT89EFI3BwAY14xIwS79fIwqJHpbQ/exec'
+const url = 'https://script.google.com/macros/s/AKfycbzqm1S9kXJrYtC70aPjfOHT89EFI3BwAY14xIwS79fIwqJHpbQ/execa'
 
 export type AnimeInfo = {
   title: string
