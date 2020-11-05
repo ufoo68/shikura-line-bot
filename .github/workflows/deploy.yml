@@ -23,7 +23,7 @@ jobs:
         run: yarn build
 
       - name: CDK Deploy prod
-        if: github.ref == 'master'
+        if: github.ref == 'master' && github.event.pull_request.merged == true
         run: yarn deploy:prod
         env:
           AWS_DEFAULT_REGION: 'us-east-1'
@@ -31,7 +31,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: CDK Deploy dev
-        if: github.ref == 'develop'
+        if: github.ref == 'develop' && github.event.pull_request.merged == true
         run: yarn deploy:dev
         env:
           AWS_DEFAULT_REGION: 'us-east-1'
