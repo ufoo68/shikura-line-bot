@@ -152,8 +152,7 @@ export class CdkStack extends cdk.Stack {
 
 ### AWS Systems Managerについて
 
-このサービス自体には色々な機能が提供されているが今回用いたのは[AWS Systems Manager パラメータストア](https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/systems-manager-parameter-store.html)。  
-Messaging　APIを利用するためのクレデンシャル情報（チャンネルシークレットトークン・アクセストークン）の管理に使用。
+このサービス自体には色々な機能が提供されているが今回用いたのは[AWS Systems Manager パラメータストア](https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/systems-manager-parameter-store.html)。目的はMessaging　APIを利用するためのクレデンシャル情報（チャンネルシークレットトークン・アクセストークン）の管理。
 
 +++
 
@@ -184,6 +183,8 @@ LINE Bot実装のためのパッケージ(`@line/bot-sdk`など)を[AWS Lambda�
 - Lambdaで用いるアプリケーションと関係するパッケージを`dependencies`
 
 Lambdaレイヤーで管理するのは`dependencies`に限定する（[参考記事](https://qiita.com/hey3/items/b4032841b01e96b75e3e)）。
+
++++
 
 ### ESLintの導入
 
