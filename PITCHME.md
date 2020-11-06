@@ -150,6 +150,13 @@ export class CdkStack extends cdk.Stack {
 
 +++
 
+### AWS Systems Managerについて
+
+このサービス自体には色々な機能が提供されているが今回用いたのは[AWS Systems Manager パラメータストア](https://docs.aws.amazon.com/ja_jp/systems-manager/latest/userguide/systems-manager-parameter-store.html)。  
+Messaging　APIを利用するためのクレデンシャル情報（チャンネルシークレットトークン・アクセストークン）の管理に使用。
+
++++
+
 ### システムの構築方法
 
 今回はTypeScriptを用いてシステムを構築。具体的な実装としては`Stack`というClassを定義してAWSリソースを定義していく。
@@ -162,6 +169,31 @@ export class ShikuraLineBotStack extends cdk.Stack {
   }
 }
 ```
+
++++
+
+### 外部パッケージの管理
+
+LINE Bot実装のためのパッケージ(`@line/bot-sdk`など)を[AWS Lambdaレイヤー](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/configuration-layers.html)を用いて管理。
+
++++
+
+### パッケージインストールの使い分け
+
+- CDKや型定義などアプリケーションと直接関係しないバッケージを`devDependencies`
+- Lambdaで用いるアプリケーションと関係するパッケージを`dependencies`
+
+Lambdaレイヤーで管理するのは`dependencies`に限定する（[参考記事](https://qiita.com/hey3/items/b4032841b01e96b75e3e)）。
+
+### ESLintの導入
+
+vscodeでの開発を快適にするために[ESLint](https://eslint.org/)をつかってみました。使う利点は、
+
+- `;`無し（もしくは有り）の統一
+- インデントの空白の文字数
+- etc
+
+などのプログラム記述に関するルールを強制することができます。
 
 ---
 
