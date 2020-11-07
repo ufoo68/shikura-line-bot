@@ -186,6 +186,20 @@ Lambdaレイヤーで管理するのは`dependencies`に限定する。
 
 +++
 
+### npmパッケージを用いた共通化
+
+他の実装でも使い回したい組み合わせを*自作npmパッケージ*で管理してみました↓。
+
+[cdk-lambda-api](https://www.npmjs.com/package/cdk-lambda-api)（Lambda+API Gatewayを共通化したもの）
+
+↓cdkにはライブラリ作成用のテンプレートが用意されています。
+
+```
+cdk init lib --language=typescript
+```
+
++++
+
 ### ESLintの導入
 
 vscodeでの開発を快適にするために[ESLint](https://eslint.org/)をつかってみました。使う利点は、
@@ -272,3 +286,12 @@ masterブランチへのマージ＋GitHub Actionsを用いた本番デプロイ
   - [AWS CDK + Typescript 環境で lambda layer を上手く管理する](https://qiita.com/hey3/items/b4032841b01e96b75e3e)
   - [LINEアプリのサンプルをCDKで書き直して見て、その凄さを実感しました](https://dev.classmethod.jp/articles/aws-cdk-line-sample/)
   - [スタック名に本番環境と開発環境の名前を含めて、それぞれデプロイしてみた](https://dev.classmethod.jp/articles/aws-cdk-deploy-dev-and-prod-stack/)
+  - [独自のライブラリを作って、他のCDKプロジェクトから使ってみる](https://dev.classmethod.jp/articles/aws-cdk-original-library-reference/)
+
++++
+
+### ついでに宣伝
+
+もしCDKでなにかLINE Botを作ってみたいと思った方のための[ハンズオン資料](https://qiita.com/ufoo68/items/8ac73d72a7f892f300b6)が一応あります。このハンズオンでは[買い物リストBot](https://github.com/ufoo68/shopping-list-bot)を作ります。
+
+![img](./asset/sc3.jpg)
