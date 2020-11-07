@@ -70,20 +70,20 @@ Cloud Formationの機能を使って、AWSのクラウド構成を簡単にデ�
 
 ### AWS CDKを使うメリット
 
-AWS CDKを使うメリットについて説明するために、*プロビジョニング*(クラウドの環境構築)の管理ついて深堀りしてみる。以降の内容は[この記事から引用](https://qiita.com/ufoo68/items/d06756b6e7bb97359074)します。
+AWS CDKを使うメリットについて説明するために、*プロビジョニング*(クラウドの環境構築)の管理ついて深堀りしてみます。以降の内容は[この記事から引用](https://qiita.com/ufoo68/items/d06756b6e7bb97359074)します。
 
 +++
 
 ### プロビジョニングを管理したい理由
 
-クラウドを構築する手っ取り早い方法は[マネジメントコンソール](https://aws.amazon.com/jp/console/)を使ってGUIをポチポチ触りながら構築していく方法である。しかしこの方法でクラウドを構築してしまうと同じ構成をコピーしたいとき、構築手順や設定値を管理したい時にものすごく面倒なことになる。
+クラウドを構築する手っ取り早い方法は[マネジメントコンソール](https://aws.amazon.com/jp/console/)を使ってGUIをポチポチ触りながら構築していく方法です。しかしこの方法でクラウドを構築してしまうと同じ構成をコピーしたいとき、構築手順や設定値を管理したい時にものすごく面倒なことになります。
 
 
 +++
 
 ### テンプレートファイルでの管理
 
-[CloudFormation](https://aws.amazon.com/jp/cloudformation/)を用いてテンプレートファイルでクラウドの構成を管理する方法がある。構成ファイルは`json`や`yaml`の形式で書くことができる。
+[CloudFormation](https://aws.amazon.com/jp/cloudformation/)を用いてテンプレートファイルでクラウドの構成を管理する方法があります。構成ファイルは`json`や`yaml`の形式で書くことができます。
 
 ```json
 {
@@ -182,7 +182,7 @@ LINE Bot実装のためのパッケージ(`@line/bot-sdk`など)を[AWS Lambda�
 - CDKや型定義などアプリケーションと直接関係しないバッケージを`devDependencies`
 - Lambdaで用いるアプリケーションと関係するパッケージを`dependencies`
 
-Lambdaレイヤーで管理するのは`dependencies`に限定する（[参考記事](https://qiita.com/hey3/items/b4032841b01e96b75e3e)）。
+Lambdaレイヤーで管理するのは`dependencies`に限定する。
 
 +++
 
@@ -206,3 +206,69 @@ vscodeでの開発を快適にするために[ESLint](https://eslint.org/)をつ
 - デプロイの管理
 - パッケージの更新
 
++++
+
+### 開発と運用それぞれの環境をわける
+
+CDKの[Context機能](https://docs.aws.amazon.com/cdk/latest/guide/context.html)を使用
+
+```
+cdk deploy -c key=value
+```
+
++++
+
+### Contextの値の取得と利用
+
+`tyrGetContext`を用いて取得。各`target`ごとにスタックIDを分けて`dev`と`prod`のスタックの分離する。
+
+```typescript
+const target: Environments = app.node.tryGetContext('target')
+new ShikuraLineBotStack(app, `ShikuraLineBotStack-${target}`, target)
+```
+
++++
+
+### 開発用のLINE Botの作成
+
+現状では公式で開発環境用のLINE Bot作成機能の提供がされていないので開発用のチャンネルを作成しました。
+
+![img](./asset/sc２.jpg)
+
++++
+
+### デプロイの管理
+
+masterブランチへのマージ＋GitHub Actionsを用いた本番デプロイ
+
+![img](./asset/deploy.jpg)
+
++++
+
+### パッケージの更新
+
+[Dependabot](https://dependabot.com/)を用いて継続的にパッケージの更新＋開発環境へのデプロイを行う
+
+![img](./asset/dependabot.jpg)
+
+---
+
+### まとめ
+
+- CDKを用いたLINE BotのDevOpsの一例を見せた
+  - AWS上でのシステムをすべてTypeScriptで管理した
+  - `dev`と`prod`の分離を行った
+- dependabotとGitHub Actionsを用いてGitHub内でのCI/CDを行った
+
++++
+
+### さいごに
+
+- 公式の情報
+  - [ドキュメント](https://docs.aws.amazon.com/cdk/api/latest/index.html)
+  - [ハンズオン](https://cdkworkshop.com/)
+  - [AWS Black Belt Online Seminar](https://aws.amazon.com/jp/blogs/news/webinar-bb-aws-cloud-development-kit-cdk-2020/)
+- 参考記事
+  - [AWS CDK + Typescript 環境で lambda layer を上手く管理する](https://qiita.com/hey3/items/b4032841b01e96b75e3e)
+  - [LINEアプリのサンプルをCDKで書き直して見て、その凄さを実感しました](https://dev.classmethod.jp/articles/aws-cdk-line-sample/)
+  - [スタック名に本番環境と開発環境の名前を含めて、それぞれデプロイしてみた](https://dev.classmethod.jp/articles/aws-cdk-deploy-dev-and-prod-stack/)
