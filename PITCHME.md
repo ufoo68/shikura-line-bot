@@ -247,7 +247,7 @@ new ShikuraLineBotStack(app, `ShikuraLineBotStack-${target}`, target)
 
 現状では公式で開発環境用のLINE Bot作成機能の提供がされていないので開発用のチャンネルを作成しました。
 
-![img](./asset/sc２.jpg)
+![img](./asset/sc2.jpg)
 
 +++
 
