@@ -1,12 +1,11 @@
 gitpitch: 4.0
 
+lang: "ja"
+
+footnote: <a href='https://revup.jp/'>LPF REV UP 2020</a>
+
+logo: asset/icon.png
+
 published: true
-
-theme-override: assets/css/PITCHME.css
-
-custom-fonts: [
-  "assets/fonts/Inter.woff2",
-  "assets/fonts/YanoneKaffeesatz.woff2"
-]
 
 title: "AWS CDKでLINE BotのDevOpsをやってみる"

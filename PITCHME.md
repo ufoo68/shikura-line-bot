@@ -1,8 +1,16 @@
+[drag=90 60, drop=center, fit=0.7]
+
 # AWS CDKでLINE BotのDevOpsをやってみる
 
 +++
 
+[drag=50 100, drop=left]
+
 ### 自己紹介
+
+![img](asset/icon.png)
+
+[drag=50 100, drop=right]
 
 - 名前
   - 松永勇太
@@ -48,7 +56,9 @@
 
 ### メインワードについて
 
-*DevOps*と*AWS CDK*について簡単に説明します。後者については以降の節でもう少し掘り下げてお話します。
+*DevOps*と*AWS CDK*について簡単に説明します。
+
+後者については以降の節でもう少し掘り下げてお話します。
 
 +++
 
@@ -56,7 +66,9 @@
 
 *Development（開発）*と*Operation（運用）*の混成語。
 
-開発チームと運用チームが協力してより質の高いプロダクト・サービスを提供する取り組みを示す概念みたいなもの。DevOpsは色んな文脈で用いられますが、このセッションでは*開発と運用の両立の方法*に視点を置きます。
+開発チームと運用チームが協力してより質の高いプロダクト・サービスを提供する取り組みを示す概念みたいなもの。
+
+DevOpsは色んな文脈で用いられますが、このセッションでは*開発と運用の両立の方法*に視点を置きます。
 
 +++
 
@@ -70,7 +82,9 @@ Cloud Formationの機能を使って、AWSのクラウド構成を簡単にデ�
 
 ### AWS CDKを使うメリット
 
-AWS CDKを使うメリットについて説明するために、*プロビジョニング*(クラウドの環境構築)の管理ついて深堀りしてみます。以降の内容は[この記事から引用](https://qiita.com/ufoo68/items/d06756b6e7bb97359074)します。
+AWS CDKを使うメリットについて説明するために、*プロビジョニング*(クラウドの環境構築)の管理ついて深堀りしてみます。
+
+以降の内容は[この記事から引用](https://qiita.com/ufoo68/items/d06756b6e7bb97359074)します。
 
 +++
 
@@ -156,18 +170,13 @@ export class CdkStack extends cdk.Stack {
 
 +++
 
+[drag=100 100, fit=0.7]
+
 ### システムの構築方法
 
-今回はTypeScriptを用いてシステムを構築。具体的な実装としては`Stack`というClassを定義してAWSリソースを定義していく。
+今回はTypeScriptを用いてシステムを構築。
 
-```typescript
-export class ShikuraLineBotStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, target: Environments, props?: cdk.StackProps) {
-    super(scope, id, props)
-    // ここにリソースを定義していく
-  }
-}
-```
+@code[typescript, fit=0.5](lib/shikura-line-bot-stack.ts)
 
 +++
 
@@ -186,17 +195,19 @@ Lambdaレイヤーで管理するのは`dependencies`に限定する。
 
 +++
 
+[drag=100 50, drop=0 0]
+
 ### npmパッケージを用いた共通化
 
-他の実装でも使い回したい組み合わせを*自作npmパッケージ*で管理してみました↓。
+- [cdk-lambda-api](https://www.npmjs.com/package/cdk-lambda-api)（Lambda+API Gatewayを共通化したもの）
 
-[cdk-lambda-api](https://www.npmjs.com/package/cdk-lambda-api)（Lambda+API Gatewayを共通化したもの）
-
-↓cdkにはライブラリ作成用のテンプレートが用意されています。
+[drag=100 50, drop=0 50]
 
 ```
 cdk init lib --language=typescript
 ```
+
+↑のようにライブラリ作成用のテンプレートが用意されているので作りやすいです。
 
 +++
 
