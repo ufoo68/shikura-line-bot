@@ -194,13 +194,15 @@ Lambdaレイヤーで管理するのは`dependencies`に限定する。
 
 ### npmパッケージを用いた共通化
 
-- [cdk-lambda-api](https://www.npmjs.com/package/cdk-lambda-api)（Lambda+API Gatewayを共通化したもの）
+↓のようにライブラリ作成用のテンプレートが用意されているので作りやすいです。
 
 ```
 cdk init lib --language=typescript
 ```
 
-↑のようにライブラリ作成用のテンプレートが用意されているので作りやすいです。
+↓実際につくったパッケージです。
+
+- [cdk-lambda-api](https://www.npmjs.com/package/cdk-lambda-api)（Lambda+API Gatewayを共通化したもの）
 
 +++
 
