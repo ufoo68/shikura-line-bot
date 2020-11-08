@@ -6,8 +6,6 @@
 
 ![img](asset/icon.png)
 
-[drag=50 100, drop=right]
-
 - 名前
   - 松永勇太
 - 出身
