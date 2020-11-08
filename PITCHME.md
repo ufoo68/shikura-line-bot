@@ -1,10 +1,6 @@
-[drag=90 60, drop=center, fit=0.7]
-
 # AWS CDKでLINE BotのDevOpsをやってみる
 
 +++
-
-[drag=50 100, drop=left]
 
 ### 自己紹介
 
@@ -170,13 +166,18 @@ export class CdkStack extends cdk.Stack {
 
 +++
 
-[drag=100 100, fit=0.7]
-
 ### システムの構築方法
 
 今回はTypeScriptを用いてシステムを構築。
 
-@code[typescript, fit=0.5](lib/shikura-line-bot-stack.ts)
+```typescript
+export class ShikuraLineBotStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, target: Environments, props?: cdk.StackProps) {
+    super(scope, id, props)
+    // ここにリソースを定義していく
+  }
+}
+```
 
 +++
 
@@ -195,13 +196,9 @@ Lambdaレイヤーで管理するのは`dependencies`に限定する。
 
 +++
 
-[drag=100 50, drop=0 0]
-
 ### npmパッケージを用いた共通化
 
 - [cdk-lambda-api](https://www.npmjs.com/package/cdk-lambda-api)（Lambda+API Gatewayを共通化したもの）
-
-[drag=100 50, drop=0 50]
 
 ```
 cdk init lib --language=typescript
