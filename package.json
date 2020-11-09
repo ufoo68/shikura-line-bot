@@ -33,7 +33,7 @@
   "dependencies": {
     "@line/bot-sdk": "^7.1.0",
     "aws-lambda": "^1.0.6",
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "line-message-builder": "^1.1.1"
   }
 }
