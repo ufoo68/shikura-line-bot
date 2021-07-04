@@ -20,7 +20,7 @@
     "@types/node": "10.17.39",
     "@typescript-eslint/eslint-plugin": "4.28.1",
     "@typescript-eslint/parser": "4.4.0",
-    "aws-cdk": "1.66.0",
+    "aws-cdk": "1.111.0",
     "cdk-lambda-api": "^1.0.0",
     "eslint": "7.20.0",
     "eslint-config-airbnb-base": "14.2.0",
