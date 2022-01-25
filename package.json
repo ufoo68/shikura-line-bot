@@ -15,7 +15,7 @@
     "@aws-cdk/assert": "^1.67.0",
     "@aws-cdk/aws-ssm": "^1.67.0",
     "@aws-cdk/core": "^1.67.0",
-    "@types/aws-lambda": "^8.10.63",
+    "@types/aws-lambda": "^8.10.92",
     "@types/jest": "^26.0.20",
     "@types/node": "10.17.39",
     "@typescript-eslint/eslint-plugin": "4.28.1",
